@@ -1,4 +1,4 @@
-#A fun place to practice and learn D3.
+# A fun place to practice and learn D3.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
