@@ -1,0 +1,1 @@
+export default '$2a$10$Vw27psIi..Y33tK6NQfCxO0v0mnexYaVywwG2.oQ2uUxUKvayCSSK';
