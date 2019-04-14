@@ -13,7 +13,14 @@ class Sandbox extends Component {
       houses: {},
       charactersByHouse: {},
       charactersByBlood: {},
-      toDraw: []
+      toDraw: [],
+      houseColors: {
+        Ravenclaw: { primary: '#002D5C', bronze: '#93948D'},
+        Gryffindor: { primary: '#640102', secondary: '#C59106'},
+        Hufflepuff: { primary: '#AA770A', secondary: '#030209'},
+        Slytherin: { primary: '#003101', secondary: '#626263'},
+        undefined: { primary: 'black', secondary: 'black' }
+      }
     }
   }
 
@@ -22,40 +29,44 @@ class Sandbox extends Component {
       // .then(res => {
         this.setState({
           charactersByHouse: this.sort(mockChars, 'house'),
-          charactersByBlood: this.sort(mockChars, 'bloodStatus'),
-          houses: this.houseColors(mockHouses)
+          charactersByBlood: this.sort(mockChars, 'bloodStatus')
+          // houses: this.houseColors(mockHouses)
         })
       // }) 
   }
 
-  handleClick = (e) => {
-    e.preventDefault()
-    let houseDots = [];
-
-    let keys = Object.keys(this.state.charactersByHouse)    
-    
-    keys.forEach(house => {
-
-      
-      let houseLength = this.state.charactersByHouse[house];
-      let dot = {
-        color: this.state.houses[house] ? this.state.houses[house][0] : '',
-        width: houseLength.length
-      }    
-      houseDots.push(dot)
-    })    
-
+  handleClick = (item) => {
     this.setState({
-      toDraw: houseDots
+      toDraw: [...this.state.toDraw, ...this.createDots(this.state.charactersByHouse)]
     })
   }
 
-  houseColors = (houses) => {    
-    return houses.reduce((acc,item)=>{
-      !acc[item.name] ? acc[item.name] = item.colors : acc[item.name] = item.colors
-      return acc;
-    },{})
+  createDots = (objToDot, color = 'black') => {
+    let dots = [];
+
+    let keys = Object.keys(objToDot)    
+
+    console.log('item', objToDot);
+    keys.forEach(item => {
+      
+      let length = (objToDot[item].length * 3);
+      let dot = {
+        color: this.state.houseColors[item] ? this.state.houseColors[item].primary : '',
+        borderColor: this.state.houseColors[item] ? this.state.houseColors[item].secondary : '',
+        width: length 
+      }    
+      dots.push(dot)
+    })  
+
+    return dots;
   }
+
+  // houseColors = (houses) => {    
+  //   return houses.reduce((acc,item)=>{
+  //     !acc[item.name] ? acc[item.name] = item.colors : acc[item.name] = item.colors
+  //     return acc;
+  //   },{})
+  // }
 
 
   sort = (characters, sortBy) => {
@@ -69,7 +80,7 @@ class Sandbox extends Component {
   render() {
     return (
       <div className="App">
-      <button onClick={this.handleClick}>click</button>
+      <button onClick={ this.handleClick }>click</button>
       { this.state.toDraw.length ? <Viz shapes={this.state.toDraw}/> : null}
       </div>
     );

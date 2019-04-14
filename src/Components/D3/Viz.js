@@ -61,6 +61,8 @@ export default class Viz extends Component {
 	  .append('svg:circle')
 	  .attr('r', d => d.width/2+"px")
 	  .style('fill', (d) => d.color ? d.color : 'purple')
+	  .style('stroke', (d) => d.borderColor ? d.borderColor : 'purple')
+	  .style('stroke-width','5')
 
 	simulation.nodes(props.shapes)
 	.on('tick', ticked)
